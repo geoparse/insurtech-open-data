@@ -64,9 +64,11 @@ Unique Property Reference Number (UPRN) is a unique identifier assigned to every
 You can download the latest UPRN dataset from [Ordnance Survey Data Hub](https://osdatahub.os.uk/downloads/open/OpenUPRN). Choose the `CSV` format, as it is smaller and faster to process than the `GeoPackage` version. 
 
 ```bash
+cd data/uprn
+
 curl -L -o uprn.zip "https://api.os.uk/downloads/v1/products/OpenUPRN/downloads?area=GB&format=CSV&redirect"
 
-unzip uprn.zip
+unzip -o uprn.zip
 
 rm uprn.zip
 

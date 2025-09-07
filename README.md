@@ -5,6 +5,8 @@ This repository provides scripts for downloading, preprocessing and exporting op
 ---
 ## Prerequisites
 
+### GDAL
+
 Before running the scripts in this repository, ensure that [GDAL](https://gdal.org/) is installed on your system.
 
 On Debian-based Systems:
@@ -31,10 +33,6 @@ sudo apt install --only-upgrade gdal-bin    # Debian
 After completing the installation, verify it by running the following commands:
 ```bash
 gdalinfo --version
-
-```
-
-```bash
 ogrinfo --version
 
 ```
@@ -49,8 +47,8 @@ A powerful feature within `GDAL/OGR` is the `ogr2ogr` command-line utility, whic
 
 In summary, `GDAL` is tailored for raster data, `OGR` for vector data, and `ogr2ogr` provides versatile tools for converting, filtering, and reprojecting vector datasets.
 
-
-You also need to install `duckdb` to be able to export files into `Parquet` format.
+### DuckDB
+This repository uses `DuckDB`, a lightweight, in-process analytical database designed for fast querying of large datasets. Unlike traditional database servers, `DuckDB` runs directly inside your scripts or applications and can query files such as `CSV` and `Parquet` without requiring data to be imported first. It is often described as “SQLite for analytics” due to its simplicity and efficiency for analytical workloads. We use `DuckDB` to export files to the `Parquet` format.
 
 ```bash
 brew install duckdb

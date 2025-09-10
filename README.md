@@ -131,7 +131,30 @@ Here's what each part of the `ogr2ogr` does:
 * `-t_srs EPSG:4326`: Reprojects data to WGS84 (latitude/longitude)
 * `-makevalid`: Attempts to fix invalid geometries
 
+---
+# [OS Open Roads](https://osdatahub.os.uk/downloads/open/OpenRoads)
 
+```bash
+
+mkdir -p data/os-open-roads
+cd data/os-open-roads
+
+curl -L -o roads.zip "https://api.os.uk/downloads/v1/products/OpenRoads/downloads?area=GB&format=GeoPackage&redirect"
+
+unzip -o roads.zip
+rm roads.zip
+
+mv Data/* .
+mv Doc/licence.txt .
+rm -rf Data/ Doc/
+
+gpkg_file=$(ls *.gpkg)
+
+ogrinfo $gpkg_file | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $gpkg_file $layer -unsetFid  -t_srs EPSG:4326 -makevalid; done
+
+ls -lh
+
+```
 
 ---
 # [OpenStreetMap (OSM)](https://download.geofabrik.de/)
@@ -168,30 +191,6 @@ while read layer; do
 done
 ```
 For each layer name, `ogr2ogr` extracts it from the `.osm.pbf` and saves it as a separate Parquet file (e.g. points.parquet, lines.parquet, …) for easier analysis.
-
-# [OS Open Roads](https://osdatahub.os.uk/downloads/open/OpenRoads)
-
-```bash
-
-mkdir -p data/os-open-roads
-cd data/os-open-roads
-
-curl -L -o roads.zip "https://api.os.uk/downloads/v1/products/OpenRoads/downloads?area=GB&format=GeoPackage&redirect"
-
-unzip -o roads.zip
-rm roads.zip
-
-mv Data/* .
-mv Doc/licence.txt .
-rm -rf Data/ Doc/
-
-gpkg_file=$(ls *.gpkg)
-
-ogrinfo $gpkg_file | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $gpkg_file $layer -unsetFid  -t_srs EPSG:4326 -makevalid; done
-
-ls -lh
-
-```
 
 ---
 ## License

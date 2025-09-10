@@ -215,7 +215,7 @@ For each layer name, `ogr2ogr` extracts it from the `.osm.pbf` and saves it as a
 <details>
 <summary><h2>5. DfT Road Traffic</h2></summary>
 
-Source: 5. [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
+Source: [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
 
 </details>
 
@@ -229,7 +229,7 @@ Source: [https://www.data.gov.uk/dataset/road-accidents-safety-data](https://www
 
 ---
 # License
-or each dataset, please refer to the licence file located in the corresponding directory.
+For each dataset, please refer to the licence file located in the corresponding directory.
 
 ---
 # Support

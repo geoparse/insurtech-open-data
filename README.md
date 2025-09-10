@@ -77,8 +77,6 @@ parquet_file="${csv_file%.*}.parquet"
 
 duckdb -c "COPY (SELECT UPRN as uprn, LATITUDE as lat, LONGITUDE as lon FROM $csv_file) TO $parquet_file"
 
-rm $csv_file
-
 ```
 
 ---
@@ -118,8 +116,6 @@ parquet_file="${gpkg_file%.*}.parquet"
 
 ogr2ogr $parquet_file $gpkg_file -dim 2 -unsetFid  -t_srs EPSG:4326 -makevalid
 
-rm $gpkg_file
-
 ```
 Here's what each part of the `ogr2ogr` does:
 
@@ -147,6 +143,8 @@ cd data/osm/$COUNTRY
 wget https://download.geofabrik.de/$REGION/$COUNTRY-latest.osm.pbf
 
 ogrinfo $COUNTRY-latest.osm.pbf | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $COUNTRY-latest.osm.pbf $layer; done
+
+ls -lh
 
 ```
 
@@ -178,13 +176,14 @@ curl -L -o roads.zip "https://api.os.uk/downloads/v1/products/OpenRoads/download
 
 unzip -o roads.zip
 rm roads.zip
-cd Data
+
+mv Data/* .
+mv Doc/* .
+rm -rf Data/ Doc/
 
 gpkg_file=$(ls *.gpkg)
 
 ogrinfo $gpkg_file | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $gpkg_file $layer -unsetFid  -t_srs EPSG:4326 -makevalid; done
-
-rm $gpkg_file
 
 ls -lh
 

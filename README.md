@@ -55,7 +55,7 @@ brew install duckdb
 ```
 
 ---
-# UPRN
+# [OS Open UPRN](https://osdatahub.os.uk/downloads/open/OpenUPRN)
 Unique Property Reference Number (UPRN) is a unique identifier assigned to every addressable location in the United Kingdom, including residential and commercial properties, land parcels, and other structures such as bus shelters or community assets. Managed by Ordnance Survey, the UPRN acts as a consistent reference point across different datasets and systems, ensuring that information from local authorities, government bodies, and private organisations can be accurately linked to the same physical location. Because it is stable over the lifetime of the property or land parcel, the UPRN plays a vital role in data integration, geocoding, property analytics, and service delivery, helping organisations reduce duplication, improve accuracy, and make better evidence-based decisions.
 
 You can download the latest UPRN dataset from [Ordnance Survey Data Hub](https://osdatahub.os.uk/downloads/open/OpenUPRN). Choose the `CSV` format, as it is smaller and faster to process than the `GeoPackage` version. 
@@ -82,7 +82,7 @@ rm $csv_file
 ```
 
 ---
-# USRN
+# [OS Open USRN](https://osdatahub.os.uk/downloads/open/OpenUSRN)
 
 Unique Street Reference Number (USRN), is a nationally recognised identifier used in Great Britain to uniquely reference every street, including roads, footpaths, cycleways and alleys. It forms part of the national addressing system and is maintained through the [National Street Gazetteer](https://www.geoplace.co.uk/addresses-streets/street-data-and-services/national-street-gazetteer), which is compiled and updated by local authorities. Much like the Unique Property Reference Number (UPRN) identifies individual properties, the USRN ensures that each street has a consistent reference across different datasets and organisations. This makes it essential for activities such as managing streetworks permits, supporting navigation and transport planning, enabling emergency services, and integrating data across government and utility providers.
 
@@ -134,9 +134,9 @@ Here's what each part of the `ogr2ogr` does:
 
 
 ---
-# OSM
+# [OpenStreetMap (OSM)](https://download.geofabrik.de/)
 
-The following script is an automation pipeline to download and convert OpenStreetMap data into Parquet files, layer by layer. 
+The following script is an automation pipeline to download and convert OpenStreetMap (OSM) data into Parquet files, layer by layer.
 
 ```bash
 REGION='europe'
@@ -166,6 +166,29 @@ while read layer; do
 done
 ```
 For each layer name, `ogr2ogr` extracts it from the `.osm.pbf` and saves it as a separate Parquet file (e.g. points.parquet, lines.parquet, …) for easier analysis.
+
+# [OS Open Roads](https://osdatahub.os.uk/downloads/open/OpenRoads)
+
+```bash
+
+mkdir -p data/os-open-roads
+cd data/os-open-roads
+
+curl -L -o roads.zip "https://api.os.uk/downloads/v1/products/OpenRoads/downloads?area=GB&format=GeoPackage&redirect"
+
+unzip -o roads.zip
+rm roads.zip
+cd Data
+
+gpkg_file=$(ls *.gpkg)
+
+ogrinfo $gpkg_file | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $gpkg_file $layer -unsetFid  -t_srs EPSG:4326 -makevalid; done
+
+rm $gpkg_file
+
+ls -lh
+
+```
 
 ---
 ## License

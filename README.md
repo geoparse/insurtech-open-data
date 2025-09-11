@@ -232,7 +232,7 @@ Source: [https://data.police.uk/data/archive/](https://data.police.uk/data/archi
 The following script automates the process of downloading the last three years of police data archives and converting them into Parquet files.
 
 ```bash
-mkdir -p police
+mkdir -p data/police
 cd $_
 wget https://data.police.uk/data/archive/latest.zip
 

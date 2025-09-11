@@ -212,6 +212,33 @@ For each layer name, `ogr2ogr` extracts it from the `.osm.pbf` and saves it as a
 
 Source: [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
 
+```bash
+mkdir -p data/dft-road-traffic/
+cd $_
+wget https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/dft_traffic_counts_raw_counts.zip
+unzip -o *.zip
+rm *.zip
+
+csv_file=$(ls *.csv)
+parquet_file="${csv_file%.*}.parquet"
+
+duckdb -c "COPY (SELECT * FROM read_csv_auto($csv_file, nullstr=['NULL'])) TO $parquet_file;"
+rm *.csv
+
+wget https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/dft_traffic_counts_aadf.zip
+unzip -o *.zip
+rm *.zip
+rm -rf __MACOSX
+
+csv_file=$(ls *.csv)
+parquet_file="${csv_file%.*}.parquet"
+
+duckdb -c "COPY (SELECT * FROM read_csv_auto($csv_file, nullstr=['NULL'])) TO $parquet_file;"
+rm *.csv
+
+ls -lh
+
+```
 </details>
 
 
@@ -236,7 +263,7 @@ mkdir -p data/police
 cd $_
 wget https://data.police.uk/data/archive/latest.zip
 
-unzip latest.zip
+unzip -o latest.zip
 rm $_
 
 for dir in */; do

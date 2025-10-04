@@ -1,6 +1,6 @@
 # Open Data Preprocessing
 
-This repository provides scripts for downloading, preprocessing and exporting open data into Parquet files.
+This repository provides scripts for downloading, preprocessing and exporting open data into Parquet format.
 
 ---
 # Prerequisites
@@ -124,10 +124,7 @@ ogr2ogr $parquet_file $gpkg_file -sql "SELECT postcode, admin_district_code, adm
 ls -lh
 
 ```
-
 </details>
-
-
 
 
 <details>

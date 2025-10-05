@@ -119,7 +119,7 @@ rm -rf Data/ Doc/
 gpkg_file=$(ls *.gpkg)
 parquet_file="${gpkg_file%.*}.parquet"
 
-ogr2ogr $parquet_file $gpkg_file -sql "SELECT postcode, admin_district_code, admin_ward_code, geometry FROM codepoint WHERE NOT ST_Equals(geometry, ST_GeomFromText('POINT(0 0)'))" -t_srs EPSG:4326 -makevalid
+ogr2ogr $parquet_file $gpkg_file -sql "SELECT postcode, country_code, admin_district_code, admin_ward_code, geometry FROM codepoint WHERE NOT ST_Equals(geometry, ST_GeomFromText('POINT(0 0)'))" -t_srs EPSG:4326 -makevalid
 
 ls -lh
 

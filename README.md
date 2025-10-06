@@ -224,7 +224,7 @@ The following script is an automation pipeline to download and convert OpenStree
 ```bash
 REGION='europe'
 COUNTRY='united-kingdom'
-mkdir -p data/osm/$COUNTRY
+mkdir -p data/geofabrik-osm/$COUNTRY
 cd $_
 
 wget https://download.geofabrik.de/$REGION/$COUNTRY-latest.osm.pbf
@@ -232,7 +232,7 @@ wget https://download.geofabrik.de/$REGION/$COUNTRY-latest.osm.pbf
 ogrinfo $COUNTRY-latest.osm.pbf | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $COUNTRY-latest.osm.pbf $layer; done
 
 ls -lh
-cd ../../
+cd ../../../
 
 ```
 

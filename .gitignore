@@ -12,6 +12,7 @@ wheels/
 data/
 notebooks/cache/
 .ipynb_checkpoints/
+.DS_Store
 
 # vim swap files
 *.swp

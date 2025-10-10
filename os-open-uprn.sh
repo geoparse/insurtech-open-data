@@ -17,10 +17,11 @@ cd "$DATA_DIR"
 # ------------------------------------------------------------------------------
 # 2. Download and extract the OS Open UPRN dataset (CSV format)
 # ------------------------------------------------------------------------------
-echo -e "\nDownloading OS Open UPRN data..."
+echo
+echo "Downloading OS Open UPRN dataset from Ordnance Survey Data Hub..."
 curl -L "https://api.os.uk/downloads/v1/products/OpenUPRN/downloads?area=GB&format=CSV&redirect" -o uprn.zip
-
-echo -e "\nExtracting ZIP archive..."
+echo
+echo "Extracting ZIP archive..."
 unzip -o uprn.zip >/dev/null
 rm uprn.zip
 
@@ -32,8 +33,8 @@ chmod 600 *
 # ------------------------------------------------------------------------------
 csv_file=$(ls *.csv | head -n 1)
 parquet_file="${csv_file%.*}.parquet"
-
-echo -e "\nConverting CSV → Parquet using DuckDB..."
+echo
+echo "Converting CSV → Parquet using DuckDB..."
 duckdb -c "
 COPY (
   SELECT
@@ -47,12 +48,14 @@ COPY (
 # ------------------------------------------------------------------------------
 # 4. Display results
 # ------------------------------------------------------------------------------
-echo -e "\nConversion complete. Generated files:"
+echo
+echo "Conversion complete. Generated files:"
 ls -lh
 
 # ------------------------------------------------------------------------------
 # 5. Return to root directory
 # ------------------------------------------------------------------------------
 cd ../../
-echo -e "\nDone."
+echo
+echo "Done."
 

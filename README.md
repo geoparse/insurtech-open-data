@@ -78,12 +78,12 @@ Alternatively, you can run the script directly:
 
 ```
 This will download, process, and save the latest OS Open UPRN dataset as a `Parquet` file in the `data/os-open-uprn/` directory.
-
+We convert the dataset to a `Parquet` file (using `DuckDB`) instead of a `GeoParquet` file (using `ogr2ogr`) because reading standard `Parquet` files with `pandas` is significantly faster than loading `GeoParquet` files with `geopandas` in Python.
 </details>
 
 
 <details>
-<summary><h2>2. OS Open Postcodes</h2></summary>
+<summary><h2>2. OS Code-Point Open</h2></summary>
 
 Source: [https://osdatahub.os.uk/downloads/open/CodePointOpen](https://osdatahub.os.uk/downloads/open/CodePointOpen)
 
@@ -91,30 +91,10 @@ Source: [https://osdatahub.os.uk/downloads/open/CodePointOpen](https://osdatahub
 Each record includes the postcode, its precise location and the local authority code.
 Released under the Open Government Licence, it can be freely used for both commercial and non-commercial purposes with proper attribution.
 
-The following script provides an automated pipeline for downloading, cleaning, reprojecting, and converting postcode data into Parquet files.
+The following script provides an automated pipeline for downloading, cleansing, reprojecting, and converting postcode data into Parquet files.
 
 ```bash
-
-mkdir -p data/os-codepoint-open
-cd $_
-
-curl -L "https://api.os.uk/downloads/v1/products/CodePointOpen/downloads?area=GB&format=GeoPackage&redirect" -o codepoint.zip
-unzip -o $_
-rm $_
-
-mv Data/* .
-mv Doc/licence.txt Doc/metadata.txt Doc/Codelist.xlsx .
-rm -rf Data/ Doc/
-
-gpkg_file=$(ls *.gpkg)
-parquet_file="${gpkg_file%.*}.parquet"
-
-ogr2ogr $parquet_file $gpkg_file -sql "SELECT postcode, country_code, admin_district_code, admin_ward_code, geometry FROM codepoint WHERE NOT ST_Equals(geometry, ST_GeomFromText('POINT(0 0)'))" -t_srs EPSG:4326 -makevalid
-
-cd ../../
-uv run python postcode_impute.py
-
-ls -lh data/os-codepoint-open
+./os-codepoint-open.sh
 
 ```
 </details>

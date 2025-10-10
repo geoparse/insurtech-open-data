@@ -5,8 +5,7 @@
 #   Downloads the latest Ordnance Survey Open UPRN dataset (CSV format),
 #   extracts it, converts it to Parquet using DuckDB, and stores it locally.
 # ------------------------------------------------------------------------------
-
-set -euo pipefail  # Exit on error, undefined var, or failed pipe
+set -euo pipefail  # Exit on error, undefined var, or failed pipe instead of continuing silently.
 
 # ------------------------------------------------------------------------------
 # 1. Prepare working directory

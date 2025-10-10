@@ -26,7 +26,7 @@ Output:
     ward, and country codes, suitable for spatial analysis and linkage with other datasets.
 """
 
-print("Reading the postcode file...")
+print("  Reading the postcode file...")
 gdf = gpd.read_parquet("./data/os-codepoint-open/codepo_gb.parquet")
 
 gdf.loc[gdf.country_code.str.startswith("S", na=False), "country_code"] = "Scotland"
@@ -62,7 +62,7 @@ gdf["country_code"] = gdf.country_code.apply(
     lambda x: area_dict[x] if x in area_dict else x
 )
 
-print("Imputing missing administrative data...")
+print("  Imputing missing administrative data...")
 # Split into known and missing district codes
 kdf = gdf[gdf["admin_district_code"].notna()]  # known df
 mdf = gdf[gdf["admin_district_code"].isna()]  # missing df
@@ -82,5 +82,5 @@ gdf.loc[gdf.admin_district_code.isnull(), "admin_district_code"] = ndf[
 ]
 gdf.loc[gdf.admin_ward_code.isnull(), "admin_ward_code"] = ndf["admin_ward_code"]
 
-print("Exporting results to ./data/os-codepoint-open/codepo_gb_imputed.parquet...")
-gdf.to_parquet("./data/os-codepoint-open/codepo_gb_imputed.parquet", index=False)
+print("  Exporting results to ./data/os-codepoint-open/codepo_gb.parquet...")
+gdf.to_parquet("./data/os-codepoint-open/codepo_gb.parquet", index=False)

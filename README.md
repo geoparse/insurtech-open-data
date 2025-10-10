@@ -333,7 +333,7 @@ cd ../../
 
 Source: [Income estimates for small areas, England and Wales](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales)
 
-The Excel file above includes separate sheets for:
+The Excel file on the above page contains separate sheets for:
 
 * Total annual household income
 * Net annual income

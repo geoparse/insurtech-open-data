@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+DATA_DIR="data/ons-income"
+EXCEL_FILE="ons-income.xlsx"
+mkdir -p "$DATA_DIR"
+cd $_
+
+curl https://www.ons.gov.uk/file?uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales/financialyearending2020/saiefy1920finalqaddownload280923.xlsx -o "$EXCEL_FILE"
+
 # ============================================
 # Configuration
 # ============================================
-INPUT_FILE="./data/ons-income/ons-income.xlsx"
-OUTPUT_DIR="./data/ons-income"
 CELL_RANGE="A5:I"
 SHEETS=(
   "Total annual income"
@@ -17,13 +22,13 @@ SHEETS=(
 # ============================================
 # Setup
 # ============================================
-mkdir -p "$OUTPUT_DIR"
 
 # Check that duckdb is installed
 if ! command -v duckdb &>/dev/null; then
   echo "Error: duckdb not found in PATH. Please install DuckDB first."
   exit 1
 fi
+echo
 
 # ============================================
 # Conversion loop
@@ -31,8 +36,7 @@ fi
 for SHEET in "${SHEETS[@]}"; do
   # Create a filename-safe version of the sheet name
   SAFE_NAME=$(echo "$SHEET" | tr '[:upper:]' '[:lower:]' | tr ' ' '_' | tr -cd '[:alnum:]_')
-
-  OUTPUT_FILE="${OUTPUT_DIR}/${SAFE_NAME}.parquet"
+  OUTPUT_FILE="${SAFE_NAME}.parquet"
 
   echo "Converting sheet: '$SHEET' → $OUTPUT_FILE"
 
@@ -40,7 +44,7 @@ for SHEET in "${SHEETS[@]}"; do
   COPY (
     SELECT *
     FROM read_xlsx(
-      '${INPUT_FILE}',
+      '${EXCEL_FILE}',
       sheet='${SHEET}',
       header=true,
       range='${CELL_RANGE}',

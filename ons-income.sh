@@ -59,7 +59,8 @@ for SHEET in "${SHEETS[@]}"; do
         sheet='${SHEET}',
         header=true,
         range='${CELL_RANGE}',
-        stop_at_empty=true
+        stop_at_empty=True,
+        normalize_names=True
       )
     ) TO '${OUTPUT_FILE}' (FORMAT PARQUET);
   "

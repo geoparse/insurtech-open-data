@@ -97,6 +97,23 @@ The following script provides an automated pipeline for downloading, cleansing, 
 ./os-codepoint-open.sh
 
 ```
+The following sample shows the data structure stored in the Parquet file:
+
+| postcode | country_code | admin_district_code | admin_ward_code | geometry |
+|----------|--------------|---------------------|-----------------|----------|
+| AB10 1AB | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
+| AB10 1AF | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
+| AB10 1AG | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09700 57.14905) |
+| AB10 1AH | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
+| AB10 1AL | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09530 57.14959) |
+
+**Dataset Statistics (Unique Values):**
+- `postcode`: ~1.74M
+- `country_code`: 3
+- `admin_district_code`: 350
+- `admin_ward_code`: 7,524
+- `geometry`: ~1.68M
+
 </details>
 
 <details>

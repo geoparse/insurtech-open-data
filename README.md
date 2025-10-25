@@ -1,6 +1,7 @@
 # Open Data Preprocessing
 
 This repository provides scripts for downloading, preprocessing and exporting open data into Parquet format.
+It regularly ingests and serves the ONS and Ordnance Survey datasets.
 
 ---
 # Prerequisites
@@ -63,9 +64,10 @@ Both commands should return output similar to:
 
 
 <details>
-<summary><h2>1. OS Open UPRN</h2></summary>
+<summary><h2>1. ONS UPRN Directory</h2></summary>
 
-Source: [https://osdatahub.os.uk/downloads/open/OpenUPRN](https://osdatahub.os.uk/downloads/open/OpenUPRN)
+Source: [ONS UPRN Directory](https://www.data.gov.uk/dataset/a615e841-c79e-4566-a422-0618faca9634/ons-uprn-directory-october-2025-epoch-121)
+Last updated: 21 October 2025
 
 Unique Property Reference Number (UPRN) is a unique identifier assigned to every addressable location in the United Kingdom, including residential and commercial properties, land parcels, and other structures such as bus shelters or community assets. Managed by Ordnance Survey, the UPRN acts as a consistent reference point across different datasets and systems, ensuring that information from local authorities, government bodies, and private organisations can be accurately linked to the same physical location. Because it is stable over the lifetime of the property or land parcel, the UPRN plays a vital role in data integration, geocoding, property analytics, and service delivery, helping organisations reduce duplication, improve accuracy, and make better evidence-based decisions.
 
@@ -74,12 +76,48 @@ You can download the latest UPRN dataset from [Ordnance Survey Data Hub](https:/
 Alternatively, you can run the script directly:
 
 ```bash
+
+curl -L -J -O https://www.arcgis.com/sharing/rest/content/items/ad7564917fe94ae4aea6487321e36325/data
+
 ./os-open-uprn.sh
 
 ```
 This will download, process, and save the latest OS Open UPRN dataset as a `Parquet` file in the `data/os-open-uprn/` directory.
 We convert the dataset to a `Parquet` file (using `DuckDB`) instead of a `GeoParquet` file (using `ogr2ogr`) because reading standard `Parquet` files with `pandas` is significantly faster than loading `GeoParquet` files with `geopandas` in Python.
 </details>
+
+
+<details>
+<summary><h2>2. ONS Postcode Directory</h2></summary>
+
+Source: [Online ONS Postcode Directory](https://www.data.gov.uk/dataset/4c105644-6071-45af-878c-6094a42df866/online-ons-postcode-directory-live1)
+
+
+The following script provides an automated pipeline for downloading, cleansing, reprojecting, and converting postcode data into Parquet files.
+
+```bash
+./ons-postcode-directory.sh
+
+curl -L https://open-geography-portalx-ons.hub.arcgis.com/api/download/v1/items/2ced9a3a2462432a92c31226e3cd3aa5/csv?layers=0 -o ons-postcode-dir.csv
+
+
+
+```
+The following sample shows the data structure stored in the Parquet file:
+
+
+
+
+
+**Dataset Statistics (Unique Values):**
+- `postcode`: ~1.79M
+- `country_code`: 4
+- 
+- 
+- `geometry`: ~1.73M
+
+</details>
+
 
 
 <details>
@@ -115,6 +153,10 @@ The following sample shows the data structure stored in the Parquet file:
 - `geometry`: ~1.68M
 
 </details>
+
+
+
+
 
 <details>
 <summary><h2>3. OS Open USRN</h2></summary>

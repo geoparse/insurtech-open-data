@@ -62,7 +62,6 @@ Both commands should return output similar to:
 
 # Open Datasets
 
-
 <details>
 <summary><h2>1. ONS UPRN Directory</h2></summary>
 
@@ -90,72 +89,59 @@ We convert the dataset to a `Parquet` file (using `DuckDB`) instead of a `GeoPar
 <details>
 <summary><h2>2. ONS Postcode Directory</h2></summary>
 
-Source: [Online ONS Postcode Directory](https://www.data.gov.uk/dataset/4c105644-6071-45af-878c-6094a42df866/online-ons-postcode-directory-live1)
+Source: [ONS Postcode Directory](https://www.data.gov.uk/dataset/3793b22f-895a-491e-9388-63060189bcbb/onspd-online-latest-postcode-centroids)
 
+The `ONS Postcode Directory` is a comprehensive dataset from the Office for National Statistics that provides geographic coordinates for every postcode unit across the UK. The dataset covers over 2.7 million postcodes, with approximately 1.8 million currently active.
+Each record includes the postcode, its precise location and associated administrative boundary codes such as country, region, county and output area. 
+Released under the Open Government Licence, it can be freely used for both commercial and non-commercial purposes with proper attribution.
 
-The following script provides an automated pipeline for downloading, cleansing, reprojecting, and converting postcode data into Parquet files.
+The following script provides an automated pipeline for downloading, cleansing and converting postcode data into Parquet files.
 
 ```bash
 ./ons-postcode-directory.sh
 
-curl -L https://open-geography-portalx-ons.hub.arcgis.com/api/download/v1/items/2ced9a3a2462432a92c31226e3cd3aa5/csv?layers=0 -o ons-postcode-dir.csv
-
-
-
 ```
+
+The script automatically:
+* Downloads the latest ONS Postcode Directory from ArcGIS Hub
+* Cleanses and validates the data
+* Converts coordinates to WGS84 (EPSG:4326)
+* Outputs to compressed Parquet format
+
+The generated Parquet file contains postcode-level geographic and administrative information with the following structure:
+
+| Column            | Description                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| **postcode**      | The standard spaced version of the postcode (e.g., “GL4 5EB”).  |
+| **intr_date**     | Date (YYYYMM) when the postcode was introduced.                 |
+| **term_date**     | Date (YYYYMM) when the postcode was terminated (NaN if active). |
+| **user_type**     | User type indicator (0 = small users, 1 = large users).         |
+| **country**       | ONS country code.                                               |
+| **region**        | ONS region code.                                                |
+| **county**        | County code (if applicable).                                    |
+| **police_force**  | Police force area code.                                         |
+| **msoa**          | Middle Layer Super Output Area 2021 code.                       |
+| **lsoa**          | Lower Layer Super Output Area 2021 code.                        |
+| **oa**            | Output Area 2021 code.                                          |
+| **rural_urban**   | Rural–urban classification code.                                |
+| **national_park** | National park area code (if applicable).                        |
+| **lat**           | Latitude coordinate (WGS84).                                    |
+| **lon**           | Longitude coordinate (WGS84).                                   |
+
 The following sample shows the data structure stored in the Parquet file:
 
 
+| postcode | intr_date | term_date | user_type | country   | region    | county    | police_force | msoa      | lsoa      | oa        | rural_urban | national_park | lat      | lon       |
+| -------- | --------- | --------- | --------- | --------- | --------- | --------- | ------------ | --------- | --------- | --------- | ----------- | ------------- | -------- | --------- |
+| GL4 5EB  | 199512    | NaN       | 0         | E92000001 | E12000009 | E10000013 | E23000037    | E02004645 | E01022281 | E00113243 | UN1         | E65000001     | 51.84167 | -2.198833 |
+| PL6 5FN  | 201509    | NaN       | 0         | E92000001 | E12000009 | E99999999 | E23000035    | E02003126 | E01015092 | E00181102 | UN1         | E65000001     | 50.41151 | -4.113341 |
+| DT2 8DS  | 198001    | NaN       | 0         | E92000001 | E12000009 | E99999999 | E23000039    | E02004266 | E01020490 | E00103879 | RSF1        | E65000001     | 50.67997 | -2.297255 |
+| SA3 5EG  | 202303    | NaN       | 0         | W92000004 | W99999999 | W99999999 | W15000003    | W02000196 | W01000882 | W00004684 | UN1         | W31000001     | 51.58912 | -4.008486 |
+| GU11 3UW | 199901    | 200009.0  | 1         | E92000001 | E12000008 | E10000014 | E23000030    | E02004812 | E01023117 | E00117455 | UN1         | E65000001     | 51.23632 | -0.760916 |
 
-
-
-**Dataset Statistics (Unique Values):**
-- `postcode`: ~1.79M
-- `country_code`: 4
-- 
-- 
-- `geometry`: ~1.73M
-
-</details>
-
-
-
-<details>
-<summary><h2>2. OS Code-Point Open</h2></summary>
-
-Source: [https://osdatahub.os.uk/downloads/open/CodePointOpen](https://osdatahub.os.uk/downloads/open/CodePointOpen)
-
-`OS Code-Point® Open` is a free dataset from Ordnance Survey that provides a geographic coordinate for every postcode unit across Great Britain, covering over 1.7 million postcodes in England, Scotland, and Wales.
-Each record includes the postcode, its precise location and the local authority code.
-Released under the Open Government Licence, it can be freely used for both commercial and non-commercial purposes with proper attribution.
-
-The following script provides an automated pipeline for downloading, cleansing, reprojecting, and converting postcode data into Parquet files.
-
-```bash
-./os-codepoint-open.sh
-
-```
-The following sample shows the data structure stored in the Parquet file:
-
-| postcode | country_code | admin_district_code | admin_ward_code | geometry |
-|----------|--------------|---------------------|-----------------|----------|
-| AB10 1AB | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
-| AB10 1AF | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
-| AB10 1AG | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09700 57.14905) |
-| AB10 1AH | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
-| AB10 1AL | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09530 57.14959) |
-
-**Dataset Statistics (Unique Values):**
-- `postcode`: ~1.74M
-- `country_code`: 3
-- `admin_district_code`: 350
-- `admin_ward_code`: 7,524
-- `geometry`: ~1.68M
+---
 
 </details>
-
-
-
 
 
 <details>

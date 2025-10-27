@@ -144,45 +144,6 @@ The following sample shows the data structure stored in the Parquet file:
 </details>
 
 
-
-<details>
-<summary><h2>2. OS Code-Point Open</h2></summary>
-
-Source: [https://osdatahub.os.uk/downloads/open/CodePointOpen](https://osdatahub.os.uk/downloads/open/CodePointOpen)
-
-`OS Code-Point® Open` is a free dataset from Ordnance Survey that provides a geographic coordinate for every postcode unit across Great Britain, covering over 1.7 million postcodes in England, Scotland, and Wales.
-Each record includes the postcode, its precise location and the local authority code.
-Released under the Open Government Licence, it can be freely used for both commercial and non-commercial purposes with proper attribution.
-
-The following script provides an automated pipeline for downloading, cleansing, reprojecting, and converting postcode data into Parquet files.
-
-```bash
-./os-codepoint-open.sh
-
-```
-The following sample shows the data structure stored in the Parquet file:
-
-| postcode | country_code | admin_district_code | admin_ward_code | geometry |
-|----------|--------------|---------------------|-----------------|----------|
-| AB10 1AB | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
-| AB10 1AF | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
-| AB10 1AG | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09700 57.14905) |
-| AB10 1AH | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09692 57.14959) |
-| AB10 1AL | Scotland | Aberdeen City | George St/Harbour Ward | POINT (-2.09530 57.14959) |
-
-**Dataset Statistics (Unique Values):**
-- `postcode`: ~1.74M
-- `country_code`: 3
-- `admin_district_code`: 350
-- `admin_ward_code`: 7,524
-- `geometry`: ~1.68M
-
-</details>
-
-
-
-
-
 <details>
 <summary><h2>3. OS Open USRN</h2></summary>
 

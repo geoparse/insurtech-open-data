@@ -139,7 +139,7 @@ The following sample shows the data structure stored in the Parquet file:
 | SA3 5EG  | 202303    | NaN       | 0         | W92000004 | W99999999 | W99999999 | W15000003    | W02000196 | W01000882 | W00004684 | UN1         | W31000001     | 51.58912 | -4.008486 |
 | GU11 3UW | 199901    | 200009.0  | 1         | E92000001 | E12000008 | E10000014 | E23000030    | E02004812 | E01023117 | E00117455 | UN1         | E65000001     | 51.23632 | -0.760916 |
 
----
+For more information on additional features included in the original `CSV` dataset, please refer to the User Guide available with the latest ONS Postcode Directory on the [UK Government Open Data Portal](https://www.data.gov.uk/search?q=postcode+directory+2025&filters%5Bpublisher%5D=&filters%5Btopic%5D=&filters%5Bformat%5D=&sort=best). Download the latest data and unzip it to find the User Guide.
 
 </details>
 

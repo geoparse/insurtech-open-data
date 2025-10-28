@@ -78,6 +78,30 @@ Alternatively, you can run the script directly:
 
 curl -L -J -O https://www.arcgis.com/sharing/rest/content/items/ad7564917fe94ae4aea6487321e36325/data
 
+duckdb -c "
+COPY (
+  SELECT
+    UPRN as uprn, 
+    GRIDGB1E as easting,
+    GRIDGB1N as northing,
+    PCDS as postcode,           -- Postcode string with spaces
+    CTRY25CD as country,        -- Country code
+    RGN25CD as region,          -- Region code
+    CTY25CD as county,          -- County code
+    PFA23CD as police_force,    -- Police force area code
+    msoa21cd   as msoa,           -- Middle Layer Super Output Area code
+    lsoa21cd as lsoa,           -- Lower Layer Super Output Area code
+    OA21CD as oa,               -- Output Area code
+  FROM read_csv_auto('$csv_file', sample_size=-1)       -- Read entire file for schema detection
+) TO '$parquet_file';  -- Output to Parquet file
+"
+
+
+
+
+
+
+
 ./os-open-uprn.sh
 
 ```
@@ -226,6 +250,52 @@ cd ../../
 ```
 
 </details>
+
+
+<details>
+<summary><h2>4. OS Open Names</h2></summary>
+
+Source: [https://osdatahub.os.uk/data/downloads/open/OpenNames](https://osdatahub.os.uk/data/downloads/open/OpenNames)
+
+
+```bash
+
+mkdir -p data/os-open-names
+cd $_
+
+curl -L "https://api.os.uk/downloads/v1/products/OpenNames/downloads?area=GB&format=GeoPackage&redirect" -o os-open-name.zip
+unzip -o $_
+rm $_
+
+mv Data/* .
+mv Doc/licence.txt .
+rm -rf Data/ Doc/
+
+gpkg_file=$(ls *.gpkg)
+parq_file="${gpkg_file%.*}.parquet"
+
+ogr2ogr os-open-names.parquet $gpkg_file -unsetFid  -t_srs EPSG:4326 -makevalid
+
+# ------------------------------------------------------------------------------
+# 4. Display results
+# ------------------------------------------------------------------------------
+echo
+echo "Conversion complete. Generated files:"
+ls -lh  # List files with human-readable sizes
+
+# ------------------------------------------------------------
+# Return to project root
+# ------------------------------------------------------------
+cd - >/dev/null  # Return to previous directory, suppress output
+echo
+echo "Done."
+
+```
+
+</details>
+
+
+
 
 <details>
 <summary><h2>5. OpenStreetMap (OSM)</h2></summary>

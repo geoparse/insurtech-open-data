@@ -72,6 +72,5 @@ ls -lh  # List files with human-readable sizes
 # Return to project root
 # ------------------------------------------------------------
 cd - >/dev/null  # Return to previous directory, suppress output
-cd $_  # Change to the actual directory we returned to
 echo
 echo "Done."

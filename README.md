@@ -171,7 +171,7 @@ You can download the latest USRN dataset from [Ordnance Survey Data Hub](https:/
 The following command displays detailed information about the GeoPackage file's structure and contents.
 
 ```bash
-ogrinfo -al -so osopenusrn_202509.gpkg
+ogrinfo -al -so osopenusrn_202510.gpkg
 
 ```
 
@@ -181,35 +181,11 @@ ogrinfo -al -so osopenusrn_202509.gpkg
 * `-so`: Summary only - shows only the summary (no feature data)
 * `osopenusrn_202509.gpkg`: The input GeoPackage file
 
-
 This following commands downloads the GeoPackage file, process and export it into a Parquet file using `ogr2ogr`.
 
 ```bash
-mkdir -p data/os-open-usrn
-cd $_
-
-curl -L "https://api.os.uk/downloads/v1/products/OpenUSRN/downloads?area=GB&format=GeoPackage&redirect" -o usrn.zip
-unzip -o $_
-rm $_
-
-gpkg_file=$(ls *.gpkg)
-parquet_file="${gpkg_file%.*}.parquet"
-
-ogr2ogr $parquet_file $gpkg_file -dim 2 -unsetFid  -t_srs EPSG:4326 -makevalid
-
-ls -lh
-cd ../../
-
+./os-open-usrn.sh
 ```
-Here's what each part of the `ogr2ogr` does:
-
-* `ogr2ogr`: GDAL/OGR utility for converting geospatial data between formats
-* `osopenusrn_202509.parquet`: Output file (Parquet format)
-* `osopenusrn_202509.gpkg`: Input file (GeoPackage format)
-* `-dim 2`: Forces 2D coordinates only (removes Z/elevation values)
-* `-unsetFid`: Prevents FID column from being exported to output
-* `-t_srs EPSG:4326`: Reprojects data to WGS84 (latitude/longitude)
-* `-makevalid`: Attempts to fix invalid geometries
 
 </details>
 

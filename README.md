@@ -194,26 +194,8 @@ This following commands downloads the GeoPackage file, process and export it int
 
 Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.uk/downloads/open/OpenRoads)
 
-
 ```bash
-
-mkdir -p data/os-open-roads
-cd $_
-
-curl -L "https://api.os.uk/downloads/v1/products/OpenRoads/downloads?area=GB&format=GeoPackage&redirect" -o roads.zip
-unzip -o $_
-rm $_
-
-mv Data/* .
-mv Doc/licence.txt .
-rm -rf Data/ Doc/
-
-gpkg_file=$(ls *.gpkg)
-
-ogrinfo $gpkg_file | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $gpkg_file $layer -unsetFid  -t_srs EPSG:4326 -makevalid; done
-
-ls -lh
-cd ../../
+./os-open-roads.sh
 
 ```
 

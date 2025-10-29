@@ -4,28 +4,26 @@ This repository provides scripts for downloading, preprocessing and exporting op
 It regularly ingests and serves the ONS and Ordnance Survey datasets.
 
 ---
-# Prerequisites
-
 <details>
-<summary><h2>DuckDB</h2></summary>
+<summary><h1>Prerequisites</h1></summary>
+
+## DuckDB
 
 This repository uses `DuckDB`, a lightweight, in-process analytical database designed for fast querying of large datasets. Unlike traditional database servers, `DuckDB` runs directly inside your scripts or applications and can query files such as `CSV` and `Parquet` without requiring data to be imported first. It is often described as “SQLite for analytics” due to its simplicity and efficiency for analytical workloads. We use `DuckDB` to export files to the `Parquet` format.
 
+On macOS:
 ```bash
+brew update
 brew install duckdb
-
 ```
-</details>
 
 
-<details>
-<summary><h2>GDAL</h2></summary>
+## GDAL
 Before running the scripts in this repository, ensure that [GDAL](https://gdal.org/) is installed on your system. `GDAL` (Geospatial Data Abstraction Library) and `OGR` (OGR Simple Features Library) are essential tools for working with geospatial data. `GDAL` is designed for reading, writing, and processing raster geospatial data, such as satellite images and digital elevation models. It supports a variety of raster formats, including GeoTIFF, JPEG, PNG, and HDF5. On the other hand, `OGR` is specialized in handling vector geospatial data, including points, lines, and polygons, and supports formats like Shapefiles, GeoJSON, KML, PostGIS, and OSM PBF. 
 
 A powerful feature within `GDAL/OGR` is the `ogr2ogr` command-line utility, which is dedicated to vector data manipulation and conversion. `ogr2ogr` allows users to convert vector data between formats (e.g., Shapefile to GeoJSON), filter and subset data using SQL-like queries, and reproject data to different coordinate reference systems (e.g., transforming WGS84 to a local `EPSG` code).
 
 In summary, `GDAL` is tailored for raster data, `OGR` for vector data, and `ogr2ogr` provides versatile tools for converting, filtering, and reprojecting vector datasets.
-
 
 On Debian-based Systems:
 ```bash
@@ -58,60 +56,34 @@ ogrinfo --version
 Both commands should return output similar to:
 
 `GDAL 3.11.3 "Eganville", released 2025/07/12`
+
+## Pigz (optional)
+
+To save storage space, we automatically compress CSV files after processing. 
+The scripts use `pigz` (parallel `gzip`) for faster compression if available, otherwise they fall back to standard `gzip`. 
+macOS and all major Linux distributions come pre-installed with `gzip` as part of the standard Unix utilities, so it's always available as a reliable fallback. 
+Both tools produce compatible `.gz` files, with `pigz` being significantly faster on multi-core systems while remaining optional.
+
+On Debian-based Systems:
+
+```bash
+sudo apt update
+sudo apt install pigz
+
+```
+
+On macOS:
+```bash
+brew update
+brew install pigz
+
+```
 </details>
 
 # Open Datasets
 
 <details>
-<summary><h2>1. ONS UPRN Directory</h2></summary>
-
-Source: [ONS UPRN Directory](https://www.data.gov.uk/dataset/a615e841-c79e-4566-a422-0618faca9634/ons-uprn-directory-october-2025-epoch-121)
-Last updated: 21 October 2025
-
-Unique Property Reference Number (UPRN) is a unique identifier assigned to every addressable location in the United Kingdom, including residential and commercial properties, land parcels, and other structures such as bus shelters or community assets. Managed by Ordnance Survey, the UPRN acts as a consistent reference point across different datasets and systems, ensuring that information from local authorities, government bodies, and private organisations can be accurately linked to the same physical location. Because it is stable over the lifetime of the property or land parcel, the UPRN plays a vital role in data integration, geocoding, property analytics, and service delivery, helping organisations reduce duplication, improve accuracy, and make better evidence-based decisions.
-
-You can download the latest UPRN dataset from [Ordnance Survey Data Hub](https://osdatahub.os.uk/downloads/open/OpenUPRN). Choose the `CSV` format, as it is smaller and faster to process than the `GeoPackage` version. 
-
-Alternatively, you can run the script directly:
-
-```bash
-
-curl -L -J -O https://www.arcgis.com/sharing/rest/content/items/ad7564917fe94ae4aea6487321e36325/data
-
-duckdb -c "
-COPY (
-  SELECT
-    UPRN as uprn, 
-    GRIDGB1E as easting,
-    GRIDGB1N as northing,
-    PCDS as postcode,           -- Postcode string with spaces
-    CTRY25CD as country,        -- Country code
-    RGN25CD as region,          -- Region code
-    CTY25CD as county,          -- County code
-    PFA23CD as police_force,    -- Police force area code
-    msoa21cd   as msoa,           -- Middle Layer Super Output Area code
-    lsoa21cd as lsoa,           -- Lower Layer Super Output Area code
-    OA21CD as oa,               -- Output Area code
-  FROM read_csv_auto('$csv_file', sample_size=-1)       -- Read entire file for schema detection
-) TO '$parquet_file';  -- Output to Parquet file
-"
-
-
-
-
-
-
-
-./os-open-uprn.sh
-
-```
-This will download, process, and save the latest OS Open UPRN dataset as a `Parquet` file in the `data/os-open-uprn/` directory.
-We convert the dataset to a `Parquet` file (using `DuckDB`) instead of a `GeoParquet` file (using `ogr2ogr`) because reading standard `Parquet` files with `pandas` is significantly faster than loading `GeoParquet` files with `geopandas` in Python.
-</details>
-
-
-<details>
-<summary><h2>2. ONS Postcode Directory</h2></summary>
+<summary><h2>1. ONS Postcode Directory</h2></summary>
 
 Source: [ONS Postcode Directory](https://www.data.gov.uk/dataset/3793b22f-895a-491e-9388-63060189bcbb/onspd-online-latest-postcode-centroids)
 
@@ -166,6 +138,29 @@ The following sample shows the data structure stored in the Parquet file:
 For more information on additional features included in the original `CSV` dataset, please refer to the User Guide available with the latest ONS Postcode Directory on the [UK Government Open Data Portal](https://www.data.gov.uk/search?q=postcode+directory+2025&filters%5Bpublisher%5D=&filters%5Btopic%5D=&filters%5Bformat%5D=&sort=best). Download the latest data and unzip it to find the User Guide.
 
 </details>
+
+
+<details>
+<summary><h2>2. ONS UPRN Directory</h2></summary>
+
+Source: [ONS UPRN Directory](https://www.data.gov.uk/dataset/a615e841-c79e-4566-a422-0618faca9634/ons-uprn-directory-october-2025-epoch-121)
+Last updated: 21 October 2025
+
+Unique Property Reference Number (UPRN) is a unique identifier assigned to every addressable location in the United Kingdom, including residential and commercial properties, land parcels, and other structures such as bus shelters or community assets. Managed by Ordnance Survey, the UPRN acts as a consistent reference point across different datasets and systems, ensuring that information from local authorities, government bodies, and private organisations can be accurately linked to the same physical location. Because it is stable over the lifetime of the property or land parcel, the UPRN plays a vital role in data integration, geocoding, property analytics, and service delivery, helping organisations reduce duplication, improve accuracy, and make better evidence-based decisions.
+
+You can download the latest UPRN dataset from [Ordnance Survey Data Hub](https://osdatahub.os.uk/downloads/open/OpenUPRN). Choose the `CSV` format, as it is smaller and faster to process than the `GeoPackage` version. 
+
+Alternatively, you can run the script directly:
+
+```bash
+./ons-uprn-directory.sh
+
+```
+This will download, process, and save the latest OS Open UPRN dataset as a `Parquet` file in the `data/os-open-uprn/` directory.
+We convert the dataset to a `Parquet` file (using `DuckDB`) instead of a `GeoParquet` file (using `ogr2ogr`) because reading standard `Parquet` files with `pandas` is significantly faster than loading `GeoParquet` files with `geopandas` in Python.
+</details>
+
+
 
 
 <details>
@@ -253,7 +248,7 @@ cd ../../
 
 
 <details>
-<summary><h2>4. OS Open Names</h2></summary>
+<summary><h2>5. OS Open Names</h2></summary>
 
 Source: [https://osdatahub.os.uk/data/downloads/open/OpenNames](https://osdatahub.os.uk/data/downloads/open/OpenNames)
 
@@ -271,7 +266,7 @@ OS Open Names is a dataset from Ordnance Survey that provides the most comprehen
 
 
 <details>
-<summary><h2>5. OpenStreetMap (OSM)</h2></summary>
+<summary><h2>6. OpenStreetMap (OSM)</h2></summary>
 
 Source: [https://download.geofabrik.de/](https://download.geofabrik.de/)
 
@@ -312,7 +307,7 @@ For each layer name, `ogr2ogr` extracts it from the `.osm.pbf` and saves it as a
 </details>
 
 <details>
-<summary><h2>6. DfT Road Traffic</h2></summary>
+<summary><h2>7. DfT Road Traffic</h2></summary>
 
 Source: [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
 
@@ -348,7 +343,7 @@ cd ../../
 
 
 <details>
-<summary><h2>7. DfT Road Safety</h2></summary>
+<summary><h2>8. DfT Road Safety</h2></summary>
 
 Source: [https://www.data.gov.uk/dataset/road-accidents-safety-data](https://www.data.gov.uk/dataset/road-accidents-safety-data)
 
@@ -382,7 +377,7 @@ cd ../../
 
 
 <details>
-<summary><h2>8. Police Open Data</h2></summary>
+<summary><h2>9. Police Open Data</h2></summary>
 
 Source: [https://data.police.uk/data/archive/](https://data.police.uk/data/archive/)
 
@@ -416,7 +411,7 @@ cd ../../
 
 
 <details>
-<summary><h2>9. ONS Income Data</h2></summary>
+<summary><h2>10. ONS Income Data</h2></summary>
 
 Source: [Income estimates for small areas, England and Wales - Office for National Statistics (ONS)](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales)
 
@@ -446,7 +441,7 @@ The following script automates the process of downloading and converting income 
 
 
 <details>
-<summary><h2>10. Output Area</h2></summary>
+<summary><h2>11. Output Area</h2></summary>
 
 Source: [https://www.data.gov.uk/dataset/4a880a9b-b509-4a82-baf1-07e3ce104f4b/output-areas1](https://www.data.gov.uk/dataset/4a880a9b-b509-4a82-baf1-07e3ce104f4b/output-areas1)
 
@@ -464,7 +459,7 @@ Output Area Geography
 
 
 <details>
-<summary><h2>11. UK Countries and England Regions</h2></summary>
+<summary><h2>12. UK Countries and England Regions</h2></summary>
 
 Source: [Countries](https://geoportal.statistics.gov.uk/search?q=BDY_CTRY%3BDEC_2024&sort=Title%7Ctitle%7Casc) and [Regions](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc)
 

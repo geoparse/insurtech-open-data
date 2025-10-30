@@ -55,6 +55,7 @@ for csv_file in Data/*.csv; do
             CTRY25CD as country,             -- Country code (E92...)
             RGN25CD as region,               -- Region code (E12...)
             CTY25CD as county,               -- County code
+            LAD25CD as local_authority,      -- Local Authority District
             PFA23CD as police_force,         -- Police force area code
             msoa21cd as msoa,                -- Middle Layer Super Output Area code
             lsoa21cd as lsoa,                -- Lower Layer Super Output Area code

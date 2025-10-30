@@ -46,6 +46,7 @@ COPY (
     CTRY25CD as country,        -- Country code
     RGN25CD as region,          -- Region code
     CTY25CD as county,          -- County code
+    LAD25CD as local_authority, -- Local Authority District
     PFA23CD as police_force,    -- Police force area code
     MSOA21CD as msoa,           -- Middle Layer Super Output Area code
     LSOA21CD as lsoa,           -- Lower Layer Super Output Area code

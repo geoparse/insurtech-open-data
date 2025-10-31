@@ -17,7 +17,7 @@ mkdir -p "$DATA_DIR"  # Create directory if it doesn't exist
 cd "$DATA_DIR"  # Change to data directory
 
 # ------------------------------------------------------------------------------
-# 2. Download and extract the Code-Point Open dataset
+# 2. Download and extract the ONS UPRN directory dataset
 # ------------------------------------------------------------------------------
 echo
 echo "Downloading and Extracting the latest ONS UPRN directory dataset from ArcGIS Hub..."

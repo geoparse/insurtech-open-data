@@ -46,6 +46,9 @@ for pattern in "CTRY*.csv" "RGN*.csv" "CTY*.csv" "LAD*.csv" "PFA*.csv" "MSOA*202
     done
 done
 
+echo '"L93000001","Channel Islands"' >> "$TEMP_FILE"
+echo '"M83000003","Isle of Man"' >> "$TEMP_FILE"
+
 # Sort and deduplicate (like merging dictionaries) - keep only first occurrence of each key
 sort -t, -u -k1,1 "$TEMP_FILE" > "$AREA_DICT"
 

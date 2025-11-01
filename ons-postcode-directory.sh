@@ -41,8 +41,8 @@ for pattern in "CTRY*.csv" "RGN*.csv" "CTY*.csv" "LAD*.csv" "PFA*.csv" "MSOA*202
     # Find files matching the pattern in the Documents directory
     for file in $DOC_DIR/$pattern; do
         echo "  $file"  # Print current file being processed
-        # Extract first 2 columns, remove carriage returns, skip header line, remove empty lines
-        cut -d, -f1,2 "$file" | tr -d '\r' | tail -n +2 | grep -v '^,' >> "$TEMP_FILE"
+        # Extract first 2 columns, remove carriage returns, skip header line, remove empty lines and wrap both columns in quotes
+        cut -d, -f1,2 "$file" | tr -d '\r' | tail -n +2 | grep -v '^,' | sed 's/^/"/; s/,/","/; s/$/"/' >> "$TEMP_FILE"
     done
 done
 

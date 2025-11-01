@@ -59,7 +59,7 @@ echo "  $AREA_DICT"
 rm $TEMP_FILE
 
 # ------------------------------------------------------------------------------
-# 3. Download and extract the Code-Point Open dataset
+# 3. Download and extract the ONS postcode directory dataset
 # ------------------------------------------------------------------------------
 echo
 echo "Downloading the latest ONS postcode directory dataset from ArcGIS Hub..."

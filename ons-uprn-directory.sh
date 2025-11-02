@@ -24,9 +24,9 @@ echo "Downloading and Extracting the latest ONS UPRN directory dataset from ArcG
 # Download the dataset from ArcGIS Hub
 curl -L https://www.arcgis.com/sharing/rest/content/items/ad7564917fe94ae4aea6487321e36325/data -o ons-uprn-directory.zip
 # Extract the zip file ($_ represents the last argument from previous command)
-unzip $_
+unzip -o $_ "Data/*"
 # Remove the zip file after extraction to save space
-rm $_
+rm *.zip
 echo
 
 # ------------------------------------------------------------------------------

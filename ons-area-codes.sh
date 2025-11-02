@@ -2,8 +2,8 @@
 # ------------------------------------------------------------------------------
 # Script: ons-postcode-directory.sh
 # Description:
-#   Downloads the latest ONS postcode directory,
-#   cleans up, converts selected fields to Parquet (EPSG:4326).
+#   Downloads the latest ONS postcode and UPRN directories,
+#   processes area codes, and creates combined area code dictionary.
 # ------------------------------------------------------------------------------
 
 export LC_ALL=C  # Set locale to C for consistent sorting and character handling
@@ -12,7 +12,7 @@ export LC_ALL=C  # Set locale to C for consistent sorting and character handling
 set -euo pipefail
 
 # ------------------------------------------------------------------------------
-# 1. Prepare working directory
+# 1. Process Postcode Dataset
 # ------------------------------------------------------------------------------
 DATA_DIR="data/ons-area-codes/pcd"  # Define main data directory path
 mkdir -p "$DATA_DIR"  # Create directory if it doesn't exist (with parents)
@@ -22,15 +22,12 @@ DOC_DIR="Documents"  # Define subdirectory name for document files
 AREA_DICT="ons-area-codes-pcd.csv"  # Output filename for area codes dictionary
 TEMP_FILE=$(mktemp)  # Create temporary file for intermediate processing
 
-# ------------------------------------------------------------------------------
-# 2. Download and extract the ONS postcode documents
-# ------------------------------------------------------------------------------
 echo
 echo "Downloading and Extracting the ONS postcode documents from ArcGIS Hub..."
 # Download the dataset from ArcGIS Hub
 curl -L https://www.arcgis.com/sharing/rest/content/items/295e076b89b542e497e05632706ab429/data -o ons-postcode-directory.zip
 # Extract the zip file ($_ represents the last argument from previous command - the zip filename)
-unzip $_ "Documents/*" "User Guide/*"  # Extract only Documents and User Guide directories
+unzip -q -o $_ "Documents/*" "User Guide/*"  # Extract only Documents and User Guide directories
 # Remove the zip file after extraction to save space
 rm *.zip
 
@@ -59,32 +56,18 @@ echo "  $AREA_DICT"
 rm $TEMP_FILE
 
 # ------------------------------------------------------------------------------
-# 5. Display results
+# 2. Display results and move to next dataset
 # ------------------------------------------------------------------------------
 echo
-echo "Conversion complete. Generated files:"
+echo "Postcode conversion complete. Generated files:"
 ls -lh  # List files with human-readable sizes
 
-# ------------------------------------------------------------
-# 6. Return to project root
-# ------------------------------------------------------------
-cd - >/dev/null  # Return to previous directory, suppress output
-
-
-
-
-
-
-
-
-
-
-
-
 # ------------------------------------------------------------------------------
-# 1. Prepare working directory
+# 3. Process UPRN Dataset
 # ------------------------------------------------------------------------------
-DATA_DIR="data/ons-area-codes/uprn"  # Define main data directory path
+cd ..  # Go back to parent directory
+
+DATA_DIR="uprn"  # Define main data directory path
 mkdir -p "$DATA_DIR"  # Create directory if it doesn't exist (with parents)
 cd "$DATA_DIR"  # Change to data directory
 
@@ -92,15 +75,12 @@ DOC_DIR="Documents"  # Define subdirectory name for document files
 AREA_DICT="ons-area-codes-uprn.csv"  # Output filename for area codes dictionary
 TEMP_FILE=$(mktemp)  # Create temporary file for intermediate processing
 
-# ------------------------------------------------------------------------------
-# 2. Download and extract the ONS postcode documents
-# ------------------------------------------------------------------------------
 echo
 echo "Downloading and Extracting the ONS UPRN documents from ArcGIS Hub..."
 # Download the dataset from ArcGIS Hub
 curl -L https://www.arcgis.com/sharing/rest/content/items/ad7564917fe94ae4aea6487321e36325/data -o ons-uprn-directory.zip
 # Extract the zip file ($_ represents the last argument from previous command - the zip filename)
-unzip $_ "Documents/*" "User Guide/*"  # Extract only Documents and User Guide directories
+unzip -q -o $_ "Documents/*" "User Guide/*"  # Extract only Documents and User Guide directories
 # Remove the zip file after extraction to save space
 rm *.zip
 
@@ -126,23 +106,28 @@ echo "  $AREA_DICT"
 rm $TEMP_FILE
 
 # ------------------------------------------------------------------------------
-# 5. Display results
+# 4. Display results and create combined file
 # ------------------------------------------------------------------------------
 echo
-echo "Conversion complete. Generated files:"
+echo "UPRN conversion complete. Generated files:"
 ls -lh  # List files with human-readable sizes
 
-# ------------------------------------------------------------
-# 6. Return to project root
-# ------------------------------------------------------------
-cd ..  
+# ------------------------------------------------------------------------------
+# 5. Create combined area codes file
+# ------------------------------------------------------------------------------
+cd ..  # Go back to parent directory
 
+echo
+echo "Creating combined area codes file..."
 cat pcd/ons-area-codes-pcd.csv uprn/ons-area-codes-uprn.csv | sort -t, -u -k1,1 > ons-area-codes.csv
 
-# ------------------------------------------------------------
-# 6. Return to project root
-# ------------------------------------------------------------
+echo "Combined file created:"
+echo "  ons-area-codes.csv"
+
+# ------------------------------------------------------------------------------
+# 6. Return to project root and display final message
+# ------------------------------------------------------------------------------
 cd - >/dev/null  # Return to previous directory, suppress output
 
 echo
-echo "Done."
+echo "Done. All area code files processed successfully."

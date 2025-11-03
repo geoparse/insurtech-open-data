@@ -222,39 +222,14 @@ OS Open Names is a dataset from Ordnance Survey that provides the most comprehen
 
 Source: [https://download.geofabrik.de/](https://download.geofabrik.de/)
 
-The following script is an automation pipeline to download and convert OpenStreetMap (OSM) data into Parquet files, layer by layer.
+This automation pipeline downloads OpenStreetMap data from Geofabrik and converts each layer—such as points, lines, multipolygons, and other relations—into separate Parquet files (e.g., points.parquet, lines.parquet) for efficient geospatial analysis. 
+
+The following script automatically extracts structured OSM data from `.osm.pbf` format into query-ready columnar storage, enabling seamless integration with data processing tools like Pandas, Spark or DuckDB.
 
 ```bash
-REGION='europe'
-COUNTRY='united-kingdom'
-mkdir -p data/geofabrik-osm/$COUNTRY
-cd $_
-
-wget https://download.geofabrik.de/$REGION/$COUNTRY-latest.osm.pbf
-
-ogrinfo $COUNTRY-latest.osm.pbf | cut -d: -f2 | cut -d' ' -f2 | tail -n +3 | while read layer; do ogr2ogr ${layer}.parquet $COUNTRY-latest.osm.pbf $layer; done
-
-ls -lh
-cd ../../../
+./geofabrik-osm.sh
 
 ```
-
-Here’s what each step does in the last command:
-
-`ogrinfo $COUNTRY-latest.osm.pbf` prints available layers (e.g. `points`, `lines`, `multilinestrings`, `multipolygons`, `other_relations`).
-
-* `cut -d: -f2` → removes the layer number (e.g. 1: points → points).
-
-* `cut -d' ' -f2` → extracts the actual layer name.
-
-* `tail -n +3` → skips the first two non-layer lines.
-
-```bash
-while read layer; do
-    ogr2ogr ${layer}.parquet $COUNTRY-latest.osm.pbf $layer
-done
-```
-For each layer name, `ogr2ogr` extracts it from the `.osm.pbf` and saves it as a separate Parquet file (e.g. points.parquet, lines.parquet, …) for easier analysis.
 
 </details>
 

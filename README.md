@@ -222,15 +222,14 @@ OS Open Names is a dataset from Ordnance Survey that provides the most comprehen
 
 Source: [https://download.geofabrik.de/](https://download.geofabrik.de/)
 
-This automation pipeline downloads OpenStreetMap data from Geofabrik and converts each layer—such as points, lines, multipolygons, and other relations—into separate Parquet files (e.g., points.parquet, lines.parquet) for efficient geospatial analysis. 
+[OpenStreetMap (OSM)](https://www.openstreetmap.org) is a collaborative, community-driven project that provides freely available geographic data covering the entire world. It includes detailed information about roads, buildings, land use, waterways, and many other physical and human-made features. [Geofabrik](https://www.geofabrik.de/) offers regularly updated regional extracts of OSM data, which are particularly useful for analytical workflows that focus on specific countries or administrative areas.
 
-The following script automatically extracts structured OSM data from `.osm.pbf` format into query-ready columnar storage, enabling seamless integration with data processing tools like Pandas, Spark or DuckDB.
+The following script automatically extracts structured OSM data from Geofabrik and converts each layer—such as points, lines, multipolygons, and other relations—into separate Parquet files (e.g., `points.parquet`, `lines.parquet`) for efficient geospatial analysis. This pipeline leverages those extracts to produce lightweight, analysis-ready datasets that can be easily queried, filtered, and joined with other spatial layers—ideal for applications in exposure management, urban planning, mobility analytics, and environmental modelling.
 
 ```bash
 ./geofabrik-osm.sh
 
 ```
-
 </details>
 
 <details>

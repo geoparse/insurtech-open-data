@@ -11,8 +11,8 @@ set -euo pipefail
 # ------------------------------------------------------------------------------
 # 1. Validate input parameters
 # ------------------------------------------------------------------------------
-if [ $# -lt 2 ]; then
-    echo "Error: Missing required parameters"
+if [ $# -ne 2 ]; then
+    echo "Error: Incorrect number of parameters"
     echo "Usage: $0 <region> <country>"
     echo "Example: $0 europe united-kingdom"
     echo "Check https://download.geofabrik.de/ for available regions and countries"
@@ -37,7 +37,15 @@ echo "Downloading OSM data for $COUNTRY ($REGION) from Geofabrik..."
 
 pbf_file="$COUNTRY-latest.osm.pbf"  # Define PBF filename
 # Download the PBF file using wget
-wget "https://download.geofabrik.de/$REGION/$pbf_file"
+curl -L -o "$pbf_file" "https://download.geofabrik.de/$REGION/$pbf_file"
+
+# Check if file is HTML (error page) instead of PBF
+if file "$pbf_file" | grep -q "HTML"; then
+    echo "Country '$COUNTRY' does not exist in region '$REGION'"
+    cd ..
+    rm -rf "$COUNTRY"
+    exit 1
+fi
 
 # Check if download was successful
 if [ ! -f "$pbf_file" ]; then

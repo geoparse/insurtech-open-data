@@ -12,8 +12,8 @@ set -euo pipefail
 # 1. Prepare working directory
 # ------------------------------------------------------------------------------
 DATA_DIR="data/geofabrik-osm"  # Define main data directory path
-REGION="europe"
-COUNTRY="united-kingdom"
+REGION=$1
+COUNTRY=$2
 mkdir -p "$DATA_DIR/$COUNTRY"  # Create directory if it doesn't exist (with parents)
 cd "$DATA_DIR/$COUNTRY"  # Change to country data directory
 

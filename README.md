@@ -224,8 +224,6 @@ Make sure you downloaded 10 `GeoPackage` files and Then run the following scrips
 
 Source: [https://www.data.gov.uk/dataset/4a880a9b-b509-4a82-baf1-07e3ce104f4b/output-areas1](https://www.data.gov.uk/dataset/4a880a9b-b509-4a82-baf1-07e3ce104f4b/output-areas1)
 
-Output Area Geography
-
 `ons-output-area.sh` processes socio-economic data for different geographic layers in England and Wales, following the Office for National Statistics (ONS) spatial hierarchy. The smallest statistical building block is the `Census Output Area (OA)`, representing a compact group of households designed for detailed local analysis. `Lower-layer Super Output Areas (LSOA)` combine multiple OAs to ensure population stability over time, while `Middle-layer Super Output Areas (MSOA)` group several LSOAs to create larger, consistent geographic zones suitable for public reporting and policy analysis.
 
 ```bash

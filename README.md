@@ -83,7 +83,7 @@ brew install pigz
 # Open Datasets
 
 <details>
-<summary><h2>1. ONS Postcode Directory</h2></summary>
+<summary><h2>ONS Postcode Directory</h2></summary>
 
 Source: [ONS Postcode Directory](https://www.data.gov.uk/dataset/3793b22f-895a-491e-9388-63060189bcbb/onspd-online-latest-postcode-centroids)
 
@@ -141,7 +141,7 @@ For more information on additional features included in the original `CSV` datas
 
 
 <details>
-<summary><h2>2. ONS UPRN Directory</h2></summary>
+<summary><h2>ONS UPRN Directory</h2></summary>
 
 Source: [ONS UPRN Directory](https://www.data.gov.uk/dataset/a615e841-c79e-4566-a422-0618faca9634/ons-uprn-directory-october-2025-epoch-121)
 
@@ -159,9 +159,33 @@ This will download, process, and save the latest OS Open UPRN dataset as a `Parq
 We convert the dataset to a `Parquet` file (using `DuckDB`) instead of a `GeoParquet` file (using `ogr2ogr`) because reading standard `Parquet` files with `pandas` is significantly faster than loading `GeoParquet` files with `geopandas` in Python.
 </details>
 
+<details>
+<summary><h2>ONS Area Codes</h2></summary>
+
+Source: [ONS Postcode Directory](https://www.data.gov.uk/dataset/7db80b46-2bb2-4f15-81e4-159b5b9ff5fd/ons-postcode-directory-august-2025-for-the-uk)
+and [ONS UPRN Directory](https://www.data.gov.uk/dataset/a615e841-c79e-4566-a422-0618faca9634/ons-uprn-directory-october-2025-epoch-121)
+
+The following script automates the creation of a comprehensive ONS area codes dictionary by downloading both the Postcode and UPRN directories from ArcGIS Hub, extracting geographic area codes and names from various administrative boundary files (including countries, regions, counties, local authorities, and statistical areas), processing them into standardized CSV formats with proper quoting and deduplication, and finally merging both datasets into a single unified area codes reference file for data analysis and mapping purposes.
+
+```bash
+./one-area-codes.sh
+
+```
+
+Here’s a sample of the resulting dataset:
+
+```
+"N21000640","Carntogher_D"
+"E01034396","Liverpool 010G"
+"E02001206","Stockport 020"
+"W01000581","Pembrokeshire 003B"
+"S01016956","Hillington - 04"
+```
+</details>
+
 
 <details>
-<summary><h2>3. OS Open USRN</h2></summary>
+<summary><h2>OS Open USRN</h2></summary>
 
 Source: [https://osdatahub.os.uk/downloads/open/OpenUSRN](https://osdatahub.os.uk/downloads/open/OpenUSRN)
 
@@ -190,7 +214,7 @@ This following commands downloads the GeoPackage file, process and export it int
 </details>
 
 <details>
-<summary><h2>4. OS Open Roads</h2></summary>
+<summary><h2>OS Open Roads</h2></summary>
 
 Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.uk/downloads/open/OpenRoads)
 
@@ -203,7 +227,7 @@ Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.
 
 
 <details>
-<summary><h2>5. OS Open Names</h2></summary>
+<summary><h2>OS Open Names</h2></summary>
 
 Source: [https://osdatahub.os.uk/data/downloads/open/OpenNames](https://osdatahub.os.uk/data/downloads/open/OpenNames)
 
@@ -218,7 +242,7 @@ OS Open Names is a dataset from Ordnance Survey that provides the most comprehen
 
 
 <details>
-<summary><h2>6. OpenStreetMap (OSM)</h2></summary>
+<summary><h2>OpenStreetMap (OSM)</h2></summary>
 
 Source: [https://download.geofabrik.de/](https://download.geofabrik.de/)
 
@@ -236,7 +260,7 @@ This pipeline leverages those extracts to produce lightweight, analysis-ready da
 </details>
 
 <details>
-<summary><h2>7. DfT Road Traffic</h2></summary>
+<summary><h2>DfT Road Traffic</h2></summary>
 
 Source: [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
 
@@ -272,7 +296,7 @@ cd ../../
 
 
 <details>
-<summary><h2>8. DfT Road Safety</h2></summary>
+<summary><h2>DfT Road Safety</h2></summary>
 
 Source: [https://www.data.gov.uk/dataset/road-accidents-safety-data](https://www.data.gov.uk/dataset/road-accidents-safety-data)
 
@@ -306,7 +330,7 @@ cd ../../
 
 
 <details>
-<summary><h2>9. Police Open Data</h2></summary>
+<summary><h2>Police Open Data</h2></summary>
 
 Source: [https://data.police.uk/data/archive/](https://data.police.uk/data/archive/)
 
@@ -340,7 +364,7 @@ cd ../../
 
 
 <details>
-<summary><h2>10. ONS Income Data</h2></summary>
+<summary><h2>ONS Income Data</h2></summary>
 
 Source: [Income estimates for small areas, England and Wales - Office for National Statistics (ONS)](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales)
 
@@ -370,7 +394,7 @@ The following script automates the process of downloading and converting income 
 
 
 <details>
-<summary><h2>11. Output Area</h2></summary>
+<summary><h2>Output Area</h2></summary>
 
 Source: [https://www.data.gov.uk/dataset/4a880a9b-b509-4a82-baf1-07e3ce104f4b/output-areas1](https://www.data.gov.uk/dataset/4a880a9b-b509-4a82-baf1-07e3ce104f4b/output-areas1)
 
@@ -388,7 +412,7 @@ Output Area Geography
 
 
 <details>
-<summary><h2>12. UK Countries and England Regions</h2></summary>
+<summary><h2>UK Countries and England Regions</h2></summary>
 
 Source: [Countries](https://geoportal.statistics.gov.uk/search?q=BDY_CTRY%3BDEC_2024&sort=Title%7Ctitle%7Casc) and [Regions](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc)
 

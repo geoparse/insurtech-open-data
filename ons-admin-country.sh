@@ -5,6 +5,7 @@
 # Description:
 #   Automates the conversion of ONS GeoPackage boundary files 
 #   for UK countries into a standardized Parquet format.
+#
 # Author: Abbas Eslami Kiasari
 # =====================================================================
 
@@ -14,7 +15,7 @@ set -euo pipefail
 # Configuration
 # ------------------------------------------------------------
 
-DATA_DIR="data/ons-admin-country"  # Output directory for processed data
+DATA_DIR="data/ons-admin/country"  # Output directory for processed data
 mkdir -p "$DATA_DIR"
 cd "$DATA_DIR"
 

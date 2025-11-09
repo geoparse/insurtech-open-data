@@ -15,7 +15,7 @@ set -euo pipefail
 # Configuration
 # ------------------------------------------------------------
 
-DATA_DIR="data/ons-admin/county"  # Output directory for processed data
+DATA_DIR="data/ons-admin-boundaries/county"  # Output directory for processed data
 mkdir -p "$DATA_DIR"
 cd "$DATA_DIR"
 

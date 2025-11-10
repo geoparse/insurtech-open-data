@@ -43,7 +43,7 @@ for gpkg_file in gpkg/*.gpkg; do
       -f Parquet "${base_name}.parquet" \
       "$gpkg_file" \
       -t_srs EPSG:4326 \
-      -sql "SELECT CTYUA24CD as county_code, CTYUA24NM as county, SHAPE as geometry FROM $layer" \
+      -sql "SELECT CTYUA24CD as county_ua_code, CTYUA24NM as county_ua, SHAPE as geometry FROM $layer" \
       -makevalid  # Ensure geometries are valid
 done
 
@@ -55,11 +55,11 @@ echo
 # ------------------------------------------------------------
 
 # Rename country Parquet files
-mv Counties_*_BFC_*.parquet counties_bfc.parquet
-mv Counties_*_BFE_*.parquet counties_bfe.parquet
-mv Counties_*_BGC_*.parquet counties_bgc.parquet
-mv Counties_*_BSC_*.parquet counties_bsc.parquet
-mv Counties_*_BUC_*.parquet counties_buc.parquet
+mv Counties_*_BFC_*.parquet counties_uas_bfc.parquet
+mv Counties_*_BFE_*.parquet counties_uas_bfe.parquet
+mv Counties_*_BGC_*.parquet counties_uas_bgc.parquet
+mv Counties_*_BSC_*.parquet counties_uas_bsc.parquet
+mv Counties_*_BUC_*.parquet counties_uas_buc.parquet
 
 echo "All Parquet files ready in $DATA_DIR"
 echo

@@ -15,7 +15,7 @@ set -euo pipefail
 # Configuration
 # ------------------------------------------------------------
 
-DATA_DIR="data/ons-admin-boundaries/county"  # Output directory for processed data
+DATA_DIR="data/ons-admin-boundaries/county-ua"  # Output directory for processed data
 mkdir -p "$DATA_DIR"
 cd "$DATA_DIR"
 
@@ -43,7 +43,7 @@ for gpkg_file in gpkg/*.gpkg; do
       -f Parquet "${base_name}.parquet" \
       "$gpkg_file" \
       -t_srs EPSG:4326 \
-      -sql "SELECT CTY24CD as county_code, CTY24NM as county, SHAPE as geometry FROM $layer" \
+      -sql "SELECT CTYUA24CD as county_code, CTYUA24NM as county, SHAPE as geometry FROM $layer" \
       -makevalid  # Ensure geometries are valid
 done
 

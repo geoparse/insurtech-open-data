@@ -59,7 +59,6 @@ mv Lower_*_BFC_*.parquet lsoa_bfc.parquet
 mv Lower_*_BFE_*.parquet lsoa_bfe.parquet
 mv Lower_*_BGC_*.parquet lsoa_bgc.parquet
 mv Lower_*_BSC_*.parquet lsoa_bsc.parquet
-#mv Lower_*_BUC_*.parquet lsoa_buc.parquet
 
 echo "All Parquet files ready in $DATA_DIR"
 echo

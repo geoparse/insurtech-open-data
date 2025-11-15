@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # =====================================================================
-# Script Name: ons-census-lsoa.sh
+# Script Name: ons-census-msoa.sh
 # Description:
 #   Automates the conversion of ONS GeoPackage boundary files 
 #   for MSOAs into a standardized Parquet format.

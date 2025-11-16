@@ -228,6 +228,9 @@ Then, run the following scripts to process the data and convert them to Parquet 
 
 Source: [Regions](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc)
 
+Download the five GeoPackage files for all spatial resolutions (BFC, BFE, BGC, BSC, and BUC) from [this link](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc).
+Then, run the following scripts to process the data and convert them to Parquet format.
+
 ```bash
 
 ./ons-admin-region.sh

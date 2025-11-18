@@ -43,7 +43,18 @@ for gpkg_file in gpkg/*.gpkg; do
       -f Parquet "${base_name}.parquet" \
       "$gpkg_file" \
       -t_srs EPSG:4326 \
-      -sql "SELECT CTYUA24CD as county_ua_code, CTYUA24NM as county_ua, SHAPE as geometry FROM $layer" \
+      -sql "SELECT
+              CTYUA24CD AS county_ua_code,
+              CTYUA24NM AS county_ua,
+              SHAPE AS geometry,
+              CASE
+                  WHEN CTYUA24CD LIKE 'E06%' OR CTYUA24CD LIKE 'W06%' OR CTYUA24CD LIKE 'S12%' THEN 'Unitary Authority'
+                  WHEN CTYUA24CD LIKE 'E08%' THEN 'Metropolitan Borough'
+                  WHEN CTYUA24CD LIKE 'E09%' THEN 'London Borough'
+                  WHEN CTYUA24CD LIKE 'E10%' THEN 'County'
+                  WHEN CTYUA24CD LIKE 'N09%' THEN 'Local Government District'
+              END AS area_type
+              FROM $layer" \
       -makevalid  # Ensure geometries are valid
 done
 

@@ -53,7 +53,7 @@ for gpkg_file in gpkg/*.gpkg; do
                   WHEN CTYUA24CD LIKE 'E09%' THEN 'London Borough'
                   WHEN CTYUA24CD LIKE 'E10%' THEN 'County'
                   WHEN CTYUA24CD LIKE 'N09%' THEN 'Local Government District'
-              END AS area_type
+              END AS admin_type
               FROM $layer" \
       -makevalid  # Ensure geometries are valid
 done

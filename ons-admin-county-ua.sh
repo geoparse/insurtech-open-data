@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # =====================================================================
-# Script Name: ons-admin-county.sh
+# Script Name: ons-admin-county-ua.sh
 # Description:
 #   Automates the conversion of ONS GeoPackage boundary files 
-#   for UK counties into a standardized Parquet format.
+#   for UK counties and unitary authorities into a standardized Parquet format.
 #
 # Author: Abbas Eslami Kiasari
 # =====================================================================
@@ -44,7 +44,7 @@ for gpkg_file in gpkg/*.gpkg; do
       "$gpkg_file" \
       -t_srs EPSG:4326 \
       -sql "SELECT
-              CTYUA24CD AS county_ua_code,
+              CTYUA24CD AS county_ua_code,    /* ONS GSS code (Government Statistical Service coding) for County/UA */
               CTYUA24NM AS county_ua,
               SHAPE AS geometry,
               CASE

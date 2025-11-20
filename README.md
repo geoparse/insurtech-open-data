@@ -187,8 +187,6 @@ Here’s a sample of the resulting dataset:
 <details>
 <summary><h2>ONS Administrative Boundaries</h2></summary>
 
-Source: [ONS Administrative Boundaries](https://geoportal.statistics.gov.uk/search?q=BDY_ADM&sort=Date%20Created%7Ccreated%7Cdesc)
-
 The Office for National Statistics (ONS) provides administrative boundary data for various geographic levels across the UK, including countries, English regions, counties, local authority districts, parishes, and wards. 
 Each boundary dataset is available in multiple spatial resolutions and coastline generalisations to balance spatial accuracy with processing performance. 
 Each boundary file includes a suffix such as `BFC`, `BFE`, `BGC`, `BSC`, or `BUC` that indicates both the detail level and whether the boundary is clipped to the coastline or includes the extent of the realm (i.e., offshore areas).
@@ -209,7 +207,7 @@ Choose “clipped” versions when you only need land boundaries, or “extent o
 <details>
 <summary><h3>Countries</h3></summary>
 
-Source: [Country Boundaries](https://geoportal.statistics.gov.uk/search?q=BDY_CTRY%3BDEC_2024&sort=Title%7Ctitle%7Casc)
+Source: [ONS Countries Boundaries](https://geoportal.statistics.gov.uk/search?q=BDY_CTRY%3BDEC_2024&sort=Title%7Ctitle%7Casc)
 
 First, download the five GeoPackage files for all spatial resolutions (BFC, BFE, BGC, BSC, and BUC) from [this link](https://geoportal.statistics.gov.uk/search?q=BDY_CTRY%3BDEC_2024&sort=Title%7Ctitle%7Casc).
 Then, run the following scripts to process the data and convert them to Parquet format.
@@ -226,7 +224,7 @@ Then, run the following scripts to process the data and convert them to Parquet 
 <details>
 <summary><h3>Regions</h3></summary>
 
-Source: [Regions](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc)
+Source: [ONS Regions Boundaries](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc)
 
 Download the five GeoPackage files for all spatial resolutions (BFC, BFE, BGC, BSC, and BUC) from [this link](https://geoportal.statistics.gov.uk/search?q=BDY_RGN%3BDEC_2024&sort=Title%7Ctitle%7Casc).
 Then, run the following scripts to process the data and convert them to Parquet format.
@@ -237,6 +235,22 @@ Then, run the following scripts to process the data and convert them to Parquet 
 
 ```
 </details>
+
+<details>
+<summary><h3>Counties and Unitary Authorities</h3></summary>
+
+Source: [ONS Counties and Unitary Authorities Boundaries](https://geoportal.statistics.gov.uk/search?q=BDY_CTYUA%202024&sort=Title%7Ctitle%7Casc)
+
+Download the five GeoPackage files for all spatial resolutions (BFC, BFE, BGC, BSC, and BUC) from [this link](https://geoportal.statistics.gov.uk/search?q=BDY_CTYUA%202024&sort=Title%7Ctitle%7Casc).
+Then, run the following scripts to process the data and convert them to Parquet format.
+
+```bash
+
+./ons-admin-county-ua.sh
+
+```
+</details>
+
 </details>
 
 

@@ -318,7 +318,7 @@ ogrinfo -al -so osopenusrn_202510.gpkg
 * `-so`: Summary only - shows only the summary (no feature data)
 * `osopenusrn_202509.gpkg`: The input GeoPackage file
 
-This following commands downloads the GeoPackage file, process and export it into a Parquet file using `ogr2ogr`.
+The following commands downloads the GeoPackage file, process and export it into a Parquet file using `ogr2ogr`.
 
 ```bash
 ./os-open-usrn.sh
@@ -344,7 +344,7 @@ Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.
 
 Source: [https://osdatahub.os.uk/data/downloads/open/OpenNames](https://osdatahub.os.uk/data/downloads/open/OpenNames)
 
-OS Open Names is a dataset from Ordnance Survey that provides the most comprehensive index of place names, road names, and postcodes across Great Britain. This repository includes tools and examples for accessing, processing, and analysing OS Open Names data — helping you link locations to coordinates, perform spatial lookups, and integrate authoritative geographic names into your applications or analyses.
+OS Open Names is a dataset from Ordnance Survey that provides the most comprehensive index of place names, road names, and postcodes across Great Britain. This section includes tools and examples for accessing, processing, and analysing OS Open Names data — helping you link locations to coordinates, perform spatial lookups, and integrate authoritative geographic names into your applications or analyses.
 
 
 ```bash
@@ -379,35 +379,13 @@ Source: [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.u
 
 This section provides a curated dataset and processing scripts for road traffic statistics in Great Britain. The data is sourced from the UK Department for Transport's (DfT) [public archive](https://roadtraffic.dft.gov.uk/downloads), which offers detailed estimates of vehicle traffic volume, classified by vehicle type and road category. The primary functions of this section are to automate the download of these official statistics, clean and standardize the data, and make it readily accessible for analysis—enabling trends in traffic flow, the impact of policy changes, and regional transportation patterns to be explored efficiently.
 
+This following commands downloads the `CSV` files, process and export it into a `Parquet` file using `DuckDB`.
+
 
 ```bash
-mkdir -p data/dft-road-traffic/
-cd $_
-wget https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/dft_traffic_counts_raw_counts.zip
-unzip -o *.zip
-rm *.zip
-
-csv_file=$(ls *.csv)
-parquet_file="${csv_file%.*}.parquet"
-
-duckdb -c "COPY (SELECT * FROM read_csv_auto($csv_file, nullstr=['NULL'])) TO $parquet_file;"
-rm *.csv
-
-wget https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/dft_traffic_counts_aadf.zip
-unzip -o *.zip
-rm *.zip
-rm -rf __MACOSX
-
-csv_file=$(ls *.csv)
-parquet_file="${csv_file%.*}.parquet"
-
-duckdb -c "COPY (SELECT * FROM read_csv_auto($csv_file, nullstr=['NULL'])) TO $parquet_file;"
-rm *.csv
-
-ls -lh
-cd ../../
-
+./dft-road-traffic.sh
 ```
+
 </details>
 
 

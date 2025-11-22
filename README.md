@@ -379,7 +379,7 @@ Source: [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.u
 
 This section provides a curated dataset and processing scripts for road traffic statistics in Great Britain. The data is sourced from the UK Department for Transport's (DfT) [public archive](https://roadtraffic.dft.gov.uk/downloads), which offers detailed estimates of vehicle traffic volume, classified by vehicle type and road category. The primary functions of this section are to automate the download of these official statistics, clean and standardize the data, and make it readily accessible for analysis—enabling trends in traffic flow, the impact of policy changes, and regional transportation patterns to be explored efficiently.
 
-This following commands downloads the `CSV` files, process and export them into a `Parquet` file using `DuckDB`.
+This following commands downloads the `CSV` files, process and export them into a `Parquet` files using `DuckDB`.
 
 
 ```bash

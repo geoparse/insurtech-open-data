@@ -392,7 +392,13 @@ This following commands downloads the `CSV` files, process and export them into 
 <details>
 <summary><h2>DfT Road Safety - STATS19</h2></summary>
 
-Source: [https://www.data.gov.uk/dataset/road-accidents-safety-data](https://www.data.gov.uk/dataset/road-accidents-safety-data)
+Source: [STATS19](https://www.data.gov.uk/dataset/road-accidents-safety-data)
+
+This section provides an automated pipeline for processing UK Department for Transport (DfT) road safety statistics. The script downloads official road safety data from [GOV.UK](https://www.gov.uk/government/statistics/road-safety-data) and converts it from `CSV` to `Parquet` format for efficient storage and analysis. The data covers road collisions, casualties, and vehicle information from 1979 to the latest published year.
+
+The pipeline handles three key datasets: collision data (incident circumstances and locations), casualty data (individual injury records and demographics), and vehicle data (vehicle types and involvement details). The conversion to `Parquet` format significantly reduces file sizes and improves query performance for data analysis.
+
+To use this pipeline, ensure you have `bash`, `wget`, and `DuckDB` installed. Simply run the provided shell script to automatically download the latest data, convert it to `Parquet` format, and organize the files for analysis. The processed data is ideal for road safety research, traffic analysis, and statistical reporting.
 
 ```bash
 ./dft-road-safety.sh

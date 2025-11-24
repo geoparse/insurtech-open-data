@@ -408,34 +408,16 @@ To use this pipeline, ensure you have `bash`, `wget`, and `DuckDB` installed. Si
 
 
 <details>
-<summary><h2>Police Open Data</h2></summary>
+<summary><h2>UK Police Open Data</h2></summary>
 
 Source: [https://data.police.uk/data/archive/](https://data.police.uk/data/archive/)
 
-The following script automates the process of downloading the last three years of police data archives and converting them into Parquet files.
+This section contains an automated pipeline for downloading, processing, and converting the last 36 months of data from the UK police public archive. The system programmatically retrieves bulk CSV files for crime, outcomes, and stop-and-search data from the structured monthly archives.
+
+The following script automates the downloading of the last three years of data and its subsequent conversion into a partitioned Parquet format. This process ensures efficient storage and prepares the dataset for high-performance analytics.
 
 ```bash
-mkdir -p data/police
-cd $_
-wget https://data.police.uk/data/archive/latest.zip
-
-unzip -o latest.zip
-rm $_
-
-for dir in */; do
-  echo "Processing $dir..."
-  (
-    cd "$dir" || exit
-    duckdb -c "COPY (SELECT * FROM read_csv_auto('*street*.csv', quote='\"')) TO 'street.parquet';"
-    duckdb -c "COPY (SELECT * FROM read_csv_auto('*stop*.csv', quote='\"')) TO 'stop-and-search.parquet';"
-    duckdb -c "COPY (SELECT * FROM read_csv_auto('*outcomes*.csv', quote='\"')) TO 'outcomes.parquet';"
-    rm -f *.csv
-  )
-done
-
-ls -lh
-cd ../../
-
+./uk-police-data.sh
 ```
 
 </details>

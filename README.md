@@ -1,9 +1,10 @@
-# Open Data Preprocessing
+# Insurtech Open Data
 
-This repository provides scripts for downloading, preprocessing and exporting open data into Parquet format.
-It regularly ingests and serves the ONS and Ordnance Survey datasets.
+High-quality geospatial data for insurtech is often locked behind expensive APIs, proprietary licenses, or scattered in inconsistent formats.
 
----
+The Geoparse `insurtech-open-data` repository solves this by providing a centralised and standardised collection of open data. We process raw sources into efficient, ready-to-use `Parquet` formats, creating a foundational data layer that is free to use, modify, and distribute. Our goal is to lower the barrier to entry for building location-powered insurtech applications.
+
+----
 <details>
 <summary><h1>Prerequisites</h1></summary>
 

@@ -7,7 +7,7 @@ The Geoparse `insurtech-open-data` repository solves this by providing a central
 The project integrates data from the following providers:
 * [Office for National Statistics (ONS)](https://www.ons.gov.uk/)
 * [Ordnance Survey (OS)](https://www.ordnancesurvey.co.uk/)
-* [Department for Transport (DFT)](https://www.gov.uk/government/organisations/department-for-transport/about/statistics)
+* [Department for Transport (DfT)](https://www.gov.uk/government/organisations/department-for-transport/about/statistics)
 * [Geofabrik](https://www.geofabrik.de/data/)
 
 ----

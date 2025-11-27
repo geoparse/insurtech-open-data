@@ -345,6 +345,18 @@ Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.
 
 </details>
 
+<details>
+<summary><h2>OS Open Greenspace</h2></summary>
+
+Source: [https://osdatahub.os.uk/data/downloads/open/OpenGreenspace](https://osdatahub.os.uk/data/downloads/open/OpenGreenspace)
+
+```bash
+./os-open-greenspace.sh
+
+```
+
+</details>
+
 
 <details>
 <summary><h2>OS Open Names</h2></summary>

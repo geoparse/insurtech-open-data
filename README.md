@@ -350,6 +350,8 @@ Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.
 
 Source: [https://osdatahub.os.uk/data/downloads/open/OpenGreenspace](https://osdatahub.os.uk/data/downloads/open/OpenGreenspace)
 
+OS Open Greenspace is a definitive geospatial dataset from Ordnance Survey that provides the location and classification of public parks, sports facilities, and other accessible greenspaces across Great Britain. For the insurance industry, this data is critical for enhancing risk models for property and liability underwriting by precisely quantifying exposure to greenspace-related perils—such as public injury liability in parks, vandalism or theft risk for properties adjacent to open spaces, and subsidence potential influenced by tree root systems from nearby allotments or gardens. The dataset is available for free under the Open Government License from the OS Data Hub.
+
 ```bash
 ./os-open-greenspace.sh
 

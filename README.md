@@ -350,7 +350,13 @@ Source: [https://osdatahub.os.uk/downloads/open/OpenRoads](https://osdatahub.os.
 
 Source: [https://osdatahub.os.uk/data/downloads/open/OpenGreenspace](https://osdatahub.os.uk/data/downloads/open/OpenGreenspace)
 
-OS Open Greenspace is a definitive geospatial dataset from Ordnance Survey that provides the location and classification of public parks, sports facilities, and other accessible greenspaces across Great Britain. For the insurance industry, this data is critical for enhancing risk models for property and liability underwriting by precisely quantifying exposure to greenspace-related perils—such as public injury liability in parks, vandalism or theft risk for properties adjacent to open spaces, and subsidence potential influenced by tree root systems from nearby allotments or gardens. The dataset is available for free under the Open Government License from the OS Data Hub.
+OS Open Greenspace is a definitive geospatial dataset from Ordnance Survey that provides the location and classification of public parks, sports facilities, and other accessible greenspaces across Great Britain. For the insurance industry, this data is critical for enhancing risk models for property and liability underwriting by precisely quantifying exposure to greenspace-related perils—such as public injury liability in parks, vandalism or theft risk for properties adjacent to open spaces, and subsidence potential influenced by tree root systems from nearby allotments or gardens.
+
+The provided `GeoPackage` file contains two spatial layers: an `access_point` layer with point locations for green space entries and a `greenspace_site` layer with MultiPolygon geometries representing the physical boundaries of those green spaces.
+The dataset is available for free under the Open Government License from the OS Data Hub.
+
+The following script processes this data, generating two corresponding `Parquet` files named `access_point.parquet` and `greenspace_site.parquet`.
+
 
 ```bash
 ./os-open-greenspace.sh

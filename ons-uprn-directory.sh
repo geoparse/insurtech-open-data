@@ -67,7 +67,7 @@ for csv_file in Data/*.csv; do
 done
 
 echo
-echo "Compress the original CSV file to save disk space"
+echo "Compress the original CSV files to save disk space"
 # Check if pigz is available (parallel gzip), otherwise use regular gzip
 if command -v pigz &> /dev/null; then
     # Use pigz for faster parallel compression of the entire Data directory
